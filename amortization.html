@@ -1,0 +1,229 @@
+<div class="container-fluid" >
+	<div class="row" ng-controller="amort_ctrl" ng-init="stl()">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<caption><strong style="font-size: 20px;">Amortization Book </strong>
+					
+					<div class="input-group" style="float:right;position: relative;">
+					<select class="form-control" style="width: 300px;"><option>Sample</option></select>
+					<button class="btn btn-default">Open Book</button>
+					<a class="btn btn-default" href="#!new_amortization_book">New Book</a></div></caption>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<table class="table" style="width: 300px;">
+						<thead>
+							<tr>
+								<th colspan="2">Loan Amount Summary</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Loan Amount</td>
+								<td>{{p}}</td>
+							</tr>
+							<tr>
+								<td>Balance Amount</td>
+								<td>{{p}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-3">
+					<table class="table" style="width: 300px;">
+						<thead>
+							<tr>
+								<th colspan="2">Dates Summary</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Loan Disbursement Date</td>
+								<td>21-1-2015</td>
+							</tr>
+							<tr>
+								<td>Loan Commensement Date</td>
+								<td>10-2-2015</td>
+							</tr>
+							<tr>
+								<td>Loan Completion Date</td>
+								<td>10-2-2030</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-3">
+					<table class="table" style="width: 300px;">
+						<thead>
+							<tr>
+								<th>Total Principal Paid</th>
+								<th>200000</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Principal Paid</td>
+								<td>{{p}}</td>
+							</tr>
+							<tr>
+								<td>Part Payment Made</td>
+								<td>{{p}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-3">
+					<table class="table" style="width: 300px;">
+						<thead>
+							<tr>
+								<th>Total Overhead Paid</th>
+								<th>200000</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Processing Fee Paid</td>
+								<td>{{p}}</td>
+							</tr>
+							<tr>
+								<td>Interest Paid</td>
+								<td>{{p}}</td>
+							</tr>
+							<tr>
+								<td>Late Payment Fine Paid</td>
+								<td>{{p}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Beginning Balance</th>
+								<th>EMI</th>
+								<th>ROI</th>
+								<th>Principal</th>
+								<th>Interest</th>
+								<th>Part Payment</th>
+								<th>Late Payment Fine</th>
+								<th>Ending Balance</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="x in arr">
+								<td>{{'10-02-2018' | date:"dd-MM-yyyy"}}</td>
+								<td>{{x.bb}}</td>
+								<td>{{x.e}}</td>
+								<td>10%</td>
+								<td>{{x.p}}</td>
+								<td>{{x.i}}</td>
+								<td ng-if="x.pp==0"><button>Make Part Payment</button></td>
+								<td ng-if="x.pp!=0"><button>{{x.pp}}</button></td>
+								<td ng-if="x.lf==0"><button>Add Late Payment Fee</button></td>
+								<td ng-if="x.lf!=0"><button>{{x.lf}}</button></td>
+								<td>{{x.eb}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div id="new_loan_book" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <form id="renameTableForm" method="post" action="{{route('c.db.rename.table')}}">
+        <input type="hidden" name="table" class="selectedTable" />
+        <input type="hidden" name="_token" value="{{csrf_token()}}" />
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h1 class="modal-title text-center">Create New Loan Book </h1>
+        </div>
+        <div class="modal-body">
+          	<div class="row">
+				<div class="col-md-12" ng-controller="emi_calc">
+					<form action="main_submit" method="get" accept-charset="utf-8">
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="n">Loan Account Name</label>
+								<input type="text" name="n" class="form-control" id="n" ng-model="n">
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="p">Principal Amount</label>
+								<input type="number" name="p" class="form-control" id="p" ng-model="p" ng-change="emi_calc()">
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="r">Rate Of Interest (%)</label>
+								<input type="number" name="r" class="form-control" id="r" ng-model="r"  ng-change="emi_calc()">
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="t">Tenure ({{tu}})</label>
+								<div class="input-group" style="width: 100%">
+									<input type="number" name="t" style="width: 75%" class="form-control" id="t" ng-model="t" ng-change="emi_calc()">
+									<select class="form-control" style="width: 25%" ng-change="tu_ch()" ng-model="tu">
+										<option>Months</option><option>Years</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="e">EMI</label>
+								<input type="number" name="e" class="form-control" id="e" ng-model="e">
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="dd">Disbursement Date</label>
+								<input type="date" name="r" class="form-control" id="r" ng-model="dd" >
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="cd">Commensement Date</label>
+								<input type="date" name="r" class="form-control" id="r" ng-model="cd" >
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="pf">Processing Fees</label>
+								<input type="number" name="r" class="form-control" id="pf" ng-model="r" >
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-default">Create</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

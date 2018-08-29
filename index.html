@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebScraper.in</title>
+  <base href="http://localhost:8011">
+  <meta charset="utf-8" />
+  <meta content='description' name='loan account book.' />
+  <meta content='keywords' name='loan account book' />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+<!--   <link rel="stylesheet"  href="css/custom.css"> -->
+<style>
+  .pp-icon:hover{
+    visibility: hidden;
+  }
+</style>
+</head>
+<body ng-app="myApp">
+  
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#!emi_calc">Loan Account Book</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-link active" onclick="nav_active(0)"><a href="#!emi_calc">EMI Calculator</a></li>
+      <!-- <li><a href="#!blog">Blog</a></li> -->
+      <li class="nav-link" onclick="nav_active(1)"><a href="#!amortization_book">Amortization Book</a></li>
+      <li class="nav-link" onclick="nav_active(2)"><a href="#!data-store">Data Store</a></li>
+      <li class="nav-link" onclick="nav_active(3)"><a href="#!contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="ng-view"></div>
+
+<script>
+var app = angular.module("myApp", ["ngRoute"]);
+app.config(function($routeProvider) {
+    $routeProvider
+    .when("/", {
+        templateUrl : "http://localhost:8011/main.html"
+    })
+    .when("/emi_calc", {
+        templateUrl : "http://localhost:8011/main.html"
+    })
+    .when("/amortization_book", {
+        templateUrl : "http://localhost:8011/amortization.html"
+    })
+    .when("/new_amortization_book", {
+        templateUrl : "http://localhost:8011/new_amortization_book.html"
+    })
+    .when("/contact", {
+        templateUrl : "http://localhost:8011/contact.html"
+    })
+    .when("/data-store", {
+        templateUrl : "http://localhost:8011/data-store.html"
+    });
+});
+
+app.controller('emi_calc', function($scope) {
+    $scope.p = 1000000;$scope.r = 10;$scope.t = 120;$scope.e=13215.07;$scope.tu="Months";$scope.m=1;
+    $scope.emi_calc = function() {
+        $scope.e = $scope.p*($scope.r/12/100)*Math.pow((1+($scope.r/12/100)), $scope.t*$scope.m) /(Math.pow((1+($scope.r/12/100)), $scope.t*$scope.m)-1);
+    };
+    $scope.tu_ch = function () {
+      if($scope.tu=="Months"){
+        $scope.m=1;
+        $scope.emi_calc();
+      }else{
+        $scope.m=12;
+        $scope.emi_calc();
+      }
+    }
+});
+app.controller('amort_ctrl', function($scope) {
+    $scope.p = 1000000;$scope.r = 10;$scope.t = 120;$scope.e=13215.07;$scope.arr = [];
+    $scope.stl = function () {
+      nav_active(1);
+      $scope.amort_calc();
+    }
+    $scope.amort_calc = function() {
+      var i=0; var bb=$scope.p; var pp=0; var lf=0;
+      while(i!=$scope.t){
+        $scope.arr.push({});
+        $scope.arr[i]['bb'] = $scope.arr.length==1?bb:$scope.arr[i-1]['eb'];
+        $scope.arr[i]['e'] = $scope.e;
+        $scope.arr[i]['i'] = $scope.r/100/12*$scope.arr[i]['bb'];
+        $scope.arr[i]['p'] = $scope.e - $scope.arr[i]['i'];
+        
+        $scope.arr[i]['pp'] = pp;
+        $scope.arr[i]['lf'] = lf;
+        $scope.arr[i]['eb'] = $scope.arr[i]['bb'] - $scope.arr[i]['pp'] - $scope.arr[i]['p'];
+        i++;
+      }
+    };
+});
+app.controller('new_amort_ctrl', function($scope) {
+    $scope.p = 1000000;$scope.r = 10;$scope.t = 120;$scope.e=13215.07;$scope.arr = [];
+    $scope.stl = function () {
+      nav_active(1);
+      $scope.amort_calc();
+    }
+});
+</script>
+
+<Script>
+  function nav_active(i){
+    j=0;
+    $("ul.nav li").each(function(){
+      $(this).removeClass("active");
+      if(i==j){
+        $(this).addClass("active");
+      }
+      j++;
+    });
+  }
+</Script>
+</body>
+</html>

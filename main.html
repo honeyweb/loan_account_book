@@ -1,0 +1,45 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12" ng-controller="emi_calc">
+			<h1 class="text-center">EMI Calculator</h1>
+			<form action="main_submit" method="get" accept-charset="utf-8">
+				<div class="row form-group">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<label for="p">Principal Amount</label>
+						<input type="number" name="p" class="form-control" id="p" ng-model="p" ng-change="emi_calc()">
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<label for="r">Rate Of Interest (%)</label>
+						<input type="number" name="r" class="form-control" id="r" ng-model="r"  ng-change="emi_calc()">
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<label for="t">Tenure ({{tu}})</label>
+						<div class="input-group" style="width: 100%">
+							<input type="number" name="t" style="width: 75%" class="form-control" id="t" ng-model="t" ng-change="emi_calc()">
+							<select class="form-control" style="width: 25%" ng-change="tu_ch()" ng-model="tu">
+								<option>Months</option><option>Years</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<label for="e">EMI</label>
+						<input type="number" name="e" class="form-control" id="e" ng-model="e">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
