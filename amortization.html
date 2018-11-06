@@ -1,5 +1,5 @@
 <div class="container-fluid" >
-	<div class="row" ng-controller="amort_ctrl" ng-init="stl()">
+	<div class="row" ng-controller="amort_ctrl" ng-init="ngOnInit()">
 		<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-12">
@@ -26,7 +26,7 @@
 							</tr>
 							<tr>
 								<td>Balance Amount</td>
-								<td>{{p}}</td>
+								<td>{{b}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -41,15 +41,15 @@
 						<tbody>
 							<tr>
 								<td>Loan Disbursement Date</td>
-								<td>21-1-2015</td>
+								<td>{{dd}}</td>
 							</tr>
 							<tr>
 								<td>Loan Commensement Date</td>
-								<td>10-2-2015</td>
+								<td>{{cd}}</td>
 							</tr>
 							<tr>
 								<td>Loan Completion Date</td>
-								<td>10-2-2030</td>
+								<td>{{md}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -59,17 +59,17 @@
 						<thead>
 							<tr>
 								<th>Total Principal Paid</th>
-								<th>200000</th>
+								<th>{{pp+pt}}</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>Principal Paid</td>
-								<td>{{p}}</td>
+								<td>{{pp}}</td>
 							</tr>
 							<tr>
 								<td>Part Payment Made</td>
-								<td>{{p}}</td>
+								<td>{{pt}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -79,21 +79,21 @@
 						<thead>
 							<tr>
 								<th>Total Overhead Paid</th>
-								<th>200000</th>
+								<th>{{pf+ip+lf}}</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>Processing Fee Paid</td>
-								<td>{{p}}</td>
+								<td>{{pf}}</td>
 							</tr>
 							<tr>
 								<td>Interest Paid</td>
-								<td>{{p}}</td>
+								<td>{{ip}}</td>
 							</tr>
 							<tr>
 								<td>Late Payment Fine Paid</td>
-								<td>{{p}}</td>
+								<td>{{lf}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -120,7 +120,7 @@
 								<td>{{'10-02-2018' | date:"dd-MM-yyyy"}}</td>
 								<td>{{x.bb}}</td>
 								<td>{{x.e}}</td>
-								<td>10%</td>
+								<td>{{x.r}}%</td>
 								<td>{{x.p}}</td>
 								<td>{{x.i}}</td>
 								<td ng-if="x.pp==0"><button>Make Part Payment</button></td>
